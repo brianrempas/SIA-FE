@@ -10,41 +10,76 @@ import { PrivateRoute } from "./routes/PrivateRoute";
 import { PublicRoute } from "./routes/PublicRoute";
 import Layout from "./Components/Layout";
 //import StudentPage from "./pages/student";
-import LecturePage from "./pages/lecture";
+import UserPage from "./pages/Auth/user/UserPage";
+import SubjectPage from "./pages/Auth/subject/SubjectPage";
+import LecturePage from "./pages/Auth/lecture/LecturePage";
 import StudentPage from "./pages/Auth/student/StudentPage";
-import { getAny } from "./services/api";
 import { useAppDispatch } from "./reducers/hooks";
 import { setAllData } from "./reducers/AllDataSlice";
-
+import { useGetLectureQuery } from "./services/LectureService";
+import { useGetUserQuery } from "./services/UserService";
+import { useGetStudentQuery } from "./services/StudentService";
+import { useGetSubjectQuery } from "./services/SubjectService";
 
 
 function App() {
+  const dispatch = useAppDispatch();
 
-  let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImJyaWFucmVtcGFzIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk5OTY3MjQ3fQ.87G1ceVjFiFnxMw9vi-SXSExmnobsuPpaphl2zbAtRU';
-  const dispatch = useAppDispatch()
+  const {
+    data: lectureData,
+    isSuccess: lectureSuccess,
+    isLoading: lectureLoading,
+    refetch: refetchLecture,
+  } = useGetLectureQuery();
 
-  async function fetchAll(){
-    const fetchUser = await getAny( token, 'http://localhost:3000/api/user')
-    const fetchSubject = await getAny( token, 'http://localhost:3000/api/subject')
-    const fetchLecture = await getAny( token, 'http://localhost:3000/api/lecture')
-    const fetchStudent = await getAny( token, 'http://localhost:3000/api/student')
-    console.log(fetchUser)
-    console.log(fetchSubject)
-    console.log(fetchLecture)
-    console.log(fetchStudent)
+  const {
+    data: subjectData,
+    isSuccess: subjectSuccess,
+    isLoading: subjectLoading,
+    refetch: refetchSubject,
+  } = useGetSubjectQuery();
 
-    dispatch(setAllData({ 
-      userData: fetchUser.data.result,
-      subjectData: fetchSubject.data.result,
-      lectureData: fetchLecture.data.result,
-      studentData: fetchStudent.data.result,
-    }));
-  }
+  const {
+    data: userData,
+    isSuccess: userSuccess,
+    isLoading: userLoading,
+    refetch: refetchUser,
+  } = useGetUserQuery();
 
+  const {
+    data: studentData,
+    isSuccess: studentSuccess,
+    isLoading: studentLoading,
+    refetch: refetchStudent,
+  } = useGetStudentQuery();
+
+  const refreshData = () => {
+    refetchLecture();
+    refetchSubject();
+    refetchUser();
+    refetchStudent();
+  };
 
   useEffect(() => {
-    fetchAll()
+    refreshData();
   }, []);
+
+  useEffect(() => {
+    if (lectureSuccess && subjectSuccess && userSuccess && studentSuccess) {
+      dispatch(
+        setAllData({
+          userData: userData?.result,
+          subjectData: subjectData?.result,
+          lectureData: lectureData?.result,
+          studentData: studentData?.result,
+        })
+      );
+    }
+  }, [lectureSuccess, subjectSuccess, userSuccess, studentSuccess]);
+
+  if (lectureLoading || subjectLoading || userLoading || studentLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Router>
@@ -53,12 +88,14 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/lecture" element={<LecturePage />} />
+            <Route path="/student" element={<StudentPage />} />
+            <Route path="/subject" element={<SubjectPage />} />
+            <Route path="/user" element={<UserPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Route>
         <Route path="/" element={<PublicRoute />}>
-          <Route path="/student" element={<StudentPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </Router>

@@ -1,16 +1,16 @@
-import { ApiResponse, LectureResponse, LectureRequest } from "../types";
+import { SubjectResponse, SubjectRequest } from "../types";
 import { apiSlice } from "./apiSlice";
-export const StudentService = apiSlice.injectEndpoints({
+export const SubjectService = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getLecture: builder.query<ApiResponse<LectureResponse>, void>({
+    getSubject: builder.query<SubjectResponse[], void>({
       query: () => {
         return {
-          url: "lecture/",
+          url: "subject/",
           method: "get",
         };
       },
     }),
-    createLecture: builder.mutation<LectureResponse, LectureRequest>({
+    createLecture: builder.mutation<SubjectResponse, SubjectRequest>({
       query: (body) => {
         return {
           url: "lecture/",
@@ -19,7 +19,7 @@ export const StudentService = apiSlice.injectEndpoints({
         };
       },
     }),
-    updateLecture: builder.mutation<LectureResponse, LectureRequest>({
+    updateLecture: builder.mutation<SubjectResponse, SubjectRequest>({
       query: (body) => {
         return {
           url: "lecture/",
@@ -39,4 +39,4 @@ export const StudentService = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetLectureQuery, useCreateLectureMutation, useUpdateLectureMutation, useDeleteLectureMutation } = StudentService;
+export const { useGetSubjectQuery } = SubjectService;

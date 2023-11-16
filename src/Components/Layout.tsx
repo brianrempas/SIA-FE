@@ -187,6 +187,16 @@ const ListMenu = [
     label: "Dosen",
     path: "/lecture",
   },
+  {
+    icon: <PersonIcon />,
+    label: "Subject",
+    path: "/subject",
+  },
+  {
+    icon: <PersonIcon />,
+    label: "Users",
+    path: "/user",
+  },
 ];
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -313,6 +323,7 @@ export default function MiniDrawer() {
         <List>
           {ListMenu.map((item) => (
             <Link
+              key={item.label}
               to={item.path}
               style={{ textDecoration: "none", color: "black" }}
             >

@@ -5,7 +5,7 @@ import { setSubjectData } from '../../../reducers/AllDataSlice'
 import { createAny, getAny, updateAny, deleteAny } from '../../../services/api'
 import { selectSubjectData } from '../../../reducers/AllDataSlice';
 
-export default function subjectPage() {
+export default function SubjectPage() {
 
     const dispatch = useAppDispatch()
     const subjectData = useAppSelector(selectSubjectData)

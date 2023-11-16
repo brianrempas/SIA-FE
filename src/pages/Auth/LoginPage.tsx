@@ -45,6 +45,7 @@ const LoginPage = () => {
           alertColor: "success",
         })
       );
+      localStorage.setItem('jwtToken', data?.token as string);
       dispatch(
         setCredentials({
           token: data?.token as string,
@@ -57,7 +58,7 @@ const LoginPage = () => {
       dispatch(
         setSnackbar({
           open: true,
-          message: "login failed",
+          message: "Login Failed",
           alertColor: "error",
         })
       );

@@ -32,6 +32,14 @@ export interface UserResponse {
   updatedAt: string;
 }
 
+export interface UserRequest {
+  userId: number;
+  mixId: number;
+  username: string;
+  password: string;
+  role: string;
+}
+
 export interface ApiResponse<T> {
   result : T[]
 }
@@ -46,11 +54,11 @@ export interface StudentResponse {
 }
 
 export interface StudentRequest{
+  subjectId: number,
   name: string;
   email: string;
-  year_in: string;
+  nim: string;
 }
-
 
 export interface LectureResponse {
   lecture_id: number;
@@ -59,4 +67,27 @@ export interface LectureResponse {
   email: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface LectureRequest{
+  lectureId: number;
+  name: string;
+  email: string;
+  nip: string;
+}
+
+export interface SubjectResponse {
+  subject_id: number;
+  name: string;
+  code: string;
+  sks: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SubjectRequest {
+  subjectId: number;
+  name: string;
+  code: string;
+  sks: number;
 }

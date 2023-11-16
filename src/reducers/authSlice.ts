@@ -30,7 +30,6 @@ export const authSlice = createSlice({
       localStorage.removeItem('user')
     },
   },
-  
 });
 
 export const selectAuth = (state: RootState) => state.authReducer;
